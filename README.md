@@ -102,15 +102,16 @@ scripts/restore.sh backups/media_database-<timestamp>.sql.gz
 ## Tests
 
 ```sh
-cd backend && .venv/bin/pytest tests/ -v   # 102 tests
+cd backend && .venv/bin/pytest tests/ -v   # 107 tests, in-memory SQLite
+scripts/test-mysql.sh                       # the same 107 tests against a throwaway MySQL 8.0 container
 cd frontend && npm test                     # 40 tests
 ```
 
-Backend tests run against SQLite, not MySQL — this environment didn't have MySQL/Docker available
-while building this, so SQLite stood in for it (see `tests/conftest.py`). Once you have the Docker
-stack up, it's worth re-running the integration tests against the real `db` service to catch any
-MySQL-specific behavior (particularly around the JSON `attributes` column) that SQLite might paper
-over.
+The default backend run uses in-memory SQLite so it's fast and needs nothing installed.
+`scripts/test-mysql.sh` (needs Docker) starts a disposable `mysql:8.0` container — the same image
+production runs — and points the suite at it via `TEST_DATABASE_URL`, to catch MySQL-specific
+behavior (e.g. the JSON `attributes` column) that SQLite might paper over. Extra arguments go to
+pytest, e.g. `scripts/test-mysql.sh tests/integration -v`. The full suite passes on both.
 
 ## What's built
 
@@ -185,7 +186,8 @@ Tracked here rather than silently glossed over:
 - **Per-category attribute editing in the manual entry form** — the backend validates attributes
   per `MediaType` (Appendix B) and the barcode-scan flow can populate them, but the manual-entry
   form doesn't yet expose category-specific fields (e.g. `director`, `issue_number`).
-- **CI, and running the automated test suite against MySQL.** The production stack has been
-  smoke-tested end to end on MySQL (migrations, login/refresh with a `Secure` cookie, collection
-  CRUD including the JSON `attributes` column, a live barcode lookup, and a backup → restore round
-  trip), but the pytest suite itself still runs only against SQLite, and nothing runs it on push.
+- **CI.** Nothing runs the tests on push yet. Locally, the backend suite passes on both SQLite
+  and MySQL (`scripts/test-mysql.sh`), and the production stack has been smoke-tested end to end
+  (migrations, login/refresh with a `Secure` cookie, collection CRUD, a live barcode lookup, and a
+  backup → restore round trip). The tests build the schema with `create_all`, not the Alembic
+  migrations, so migrations are covered only by that smoke test.
