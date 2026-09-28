@@ -1,0 +1,11 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "id": 3498,
+      "name": "Grand Theft Auto V",
+      "background_image": "https://media.rawg.io/media/games/example.jpg",
+      "platforms": [{ "platform": { "name": "PlayStation 4" } }, { "platform": { "name": "Xbox One" } }]
+    }
+  ]
+}

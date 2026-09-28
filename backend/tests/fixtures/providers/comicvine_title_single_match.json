@@ -1,0 +1,14 @@
+{
+  "error": "OK",
+  "results": [
+    {
+      "id": 12345,
+      "name": "Batman #1",
+      "issue_number": "1",
+      "volume": { "name": "Batman" },
+      "site_detail_url": "https://comicvine.gamespot.com/batman-1/4000-12345/",
+      "image": { "medium_url": "https://comicvine.gamespot.com/a/uploads/scale_medium/example.jpg" },
+      "resource_type": "issue"
+    }
+  ]
+}

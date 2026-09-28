@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "id": "abc123",
+      "name": "Super Mario Odyssey",
+      "platform": "Nintendo Switch",
+      "upc": "045496594454",
+      "image_url": "https://scandex.gamery.app/images/abc123.jpg",
+      "url": "https://scandex.gamery.app/games/abc123"
+    }
+  ]
+}

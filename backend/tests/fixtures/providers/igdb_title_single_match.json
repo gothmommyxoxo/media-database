@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1942,
+    "name": "The Witcher 3: Wild Hunt",
+    "url": "https://www.igdb.com/games/the-witcher-3-wild-hunt",
+    "cover": { "url": "//images.igdb.com/igdb/image/upload/t_thumb/example.jpg" },
+    "platforms": [{ "name": "PC" }, { "name": "PlayStation 4" }]
+  }
+]

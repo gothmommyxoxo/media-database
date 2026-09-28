@@ -1,0 +1,134 @@
+/* index.css sets `color-scheme: light dark` on :root, which makes the browser render native
+   form-control colors (inputs, selects, buttons) independently of our own --text/--bg variables.
+   Without this rule those controls can end up mismatched against the page (e.g. dark-on-dark),
+   so every interactive element explicitly follows our own theme-aware colors instead. */
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.login-page {
+  max-width: 320px;
+  margin: 4rem auto;
+}
+
+.login-page form,
+.manual-entry-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.login-page label,
+.manual-entry-page label {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.form-error {
+  color: #dc2626;
+}
+
+.collection-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.media-type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.item-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.item-grid li {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.media-type-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  /* Fixed light chip in both themes, so its text color is fixed too, not inherited. */
+  color: #111827;
+  background: #e5e7eb;
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  margin-right: 0.4rem;
+}
+
+.scanner-video {
+  width: 100%;
+  max-width: 480px;
+  background: #111;
+  border-radius: 8px;
+}
+
+.manual-barcode-form {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.resolution-page .candidates ul,
+.resolution-page .owned-matches ul {
+  list-style: none;
+  padding: 0;
+}
+
+.resolution-page .candidates li {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.owned-matches {
+  /* Fixed warning-amber chip in both themes, so its text color is fixed too, not inherited. */
+  color: #78350f;
+  background: #fef3c7;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.owned-matches a {
+  color: #78350f;
+}

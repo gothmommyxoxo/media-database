@@ -1,0 +1,15 @@
+{
+  "created": "2026-08-04T00:00:00.000Z",
+  "count": 1,
+  "offset": 0,
+  "releases": [
+    {
+      "id": "09ffa920-becb-4e2f-b511-01aa50fb2cb3",
+      "score": 100,
+      "title": "Discovery",
+      "artist-credit": [{"name": "Daft Punk"}],
+      "barcode": "724384960650",
+      "media": [{"format": "CD", "track-count": 14}]
+    }
+  ]
+}

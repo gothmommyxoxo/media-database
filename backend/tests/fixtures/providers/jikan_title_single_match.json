@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "mal_id": 2,
+      "title": "Berserk",
+      "url": "https://myanimelist.net/manga/2/Berserk",
+      "images": { "jpg": { "image_url": "https://cdn.myanimelist.net/images/manga/1/157897.jpg" } },
+      "authors": [{ "name": "Miura, Kentarou" }]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "data": {
+    "Page": {
+      "media": [
+        {
+          "id": 30002,
+          "title": { "romaji": "Berserk", "english": "Berserk" },
+          "format": "MANGA",
+          "siteUrl": "https://anilist.co/manga/30002",
+          "coverImage": { "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/30002.jpg" },
+          "staff": { "edges": [{ "node": { "name": { "full": "Kentaro Miura" } } }] }
+        }
+      ]
+    }
+  }
+}

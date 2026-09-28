@@ -1,0 +1,13 @@
+{
+  "Search": [
+    {
+      "Title": "Brazil",
+      "Year": "1985",
+      "imdbID": "tt0088846",
+      "Type": "movie",
+      "Poster": "https://m.media-amazon.com/images/example.jpg"
+    }
+  ],
+  "totalResults": "1",
+  "Response": "True"
+}

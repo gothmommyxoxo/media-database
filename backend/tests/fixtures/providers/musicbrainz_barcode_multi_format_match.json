@@ -1,0 +1,23 @@
+{
+  "created": "2026-08-04T00:00:00.000Z",
+  "count": 2,
+  "offset": 0,
+  "releases": [
+    {
+      "id": "09ffa920-becb-4e2f-b511-01aa50fb2cb3",
+      "score": 100,
+      "title": "Discovery",
+      "artist-credit": [{"name": "Daft Punk"}],
+      "barcode": "724384960650",
+      "media": [{"format": "CD", "track-count": 14}]
+    },
+    {
+      "id": "b8c2b7d2-1a3e-4c5f-9a6b-7d8e9f0a1b2c",
+      "score": 95,
+      "title": "Discovery",
+      "artist-credit": [{"name": "Daft Punk"}],
+      "barcode": "724384960650",
+      "media": [{"format": "Vinyl", "track-count": 14}]
+    }
+  ]
+}

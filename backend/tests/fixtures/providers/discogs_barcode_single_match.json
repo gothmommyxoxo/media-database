@@ -1,0 +1,14 @@
+{
+  "results": [
+    {
+      "id": 1234567,
+      "title": "Daft Punk - Discovery",
+      "year": "2001",
+      "format": ["Vinyl", "LP", "Album"],
+      "label": ["Virgin"],
+      "barcode": ["724384960650"],
+      "resource_url": "https://api.discogs.com/releases/1234567",
+      "cover_image": "https://img.discogs.com/example.jpg"
+    }
+  ]
+}
