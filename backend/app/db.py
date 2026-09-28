@@ -11,8 +11,11 @@ class Base(DeclarativeBase):
 
 
 def make_engine(database_url: str):
-    connect_args = {"check_same_thread": False} if database_url.startswith("sqlite") else {}
-    return create_engine(database_url, connect_args=connect_args)
+    if database_url.startswith("sqlite"):
+        return create_engine(database_url, connect_args={"check_same_thread": False})
+    # MySQL closes idle connections after wait_timeout; a low-traffic household app would otherwise
+    # hit "MySQL server has gone away" on the first request after a quiet stretch.
+    return create_engine(database_url, pool_pre_ping=True, pool_recycle=3600)
 
 
 engine = make_engine(settings.database_url)

@@ -18,9 +18,13 @@ dist-ssr/
 .env
 .env.*
 !.env.example
+!.env.production.example
 
 # Editor / OS
 .DS_Store
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Production database dumps (scripts/backup-loop.sh)
+backups/

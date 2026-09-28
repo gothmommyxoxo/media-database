@@ -49,8 +49,55 @@ cd frontend && npm install && npm run dev
 
 Camera-based scanning needs a secure context — it works on `localhost`, but if you access the dev
 frontend from your phone over plain HTTP on your LAN, the browser will block camera access (this is
-the same platform constraint Section 2.2 documents for the real deployment; a real deploy needs the
-Caddy/TLS setup in the production Dockerfile target, not the dev one).
+the same platform constraint Section 2.2 documents for the real deployment; see "Deploying to
+production" below for the Caddy/TLS setup).
+
+## Deploying to production
+
+`docker-compose.prod.yml` runs the Section 11 deployment on a single server: Caddy (static build +
+`/api` reverse proxy + automatic Let's Encrypt TLS), the backend, MySQL, and a daily backup job.
+Only ports 80/443 are exposed; MySQL and the backend stay on the internal network.
+
+**Prerequisites:** a Linux server with Docker, a domain whose DNS A/AAAA record points at it, and
+inbound ports 80 and 443 open (Let's Encrypt validates over them). HTTPS isn't optional — browsers
+only allow camera scanning over a secure origin.
+
+```sh
+# 1. Infrastructure settings: domain, DB passwords, backup location
+cp .env.production.example .env
+#    edit .env — set DOMAIN and generate both passwords with `openssl rand -hex 24`
+
+# 2. App secrets and provider API keys
+cp backend/.env.example backend/.env
+#    edit backend/.env — set JWT_SECRET=$(openssl rand -hex 32) and whichever provider keys you have
+#    (DATABASE_URL in this file is ignored in production; the compose file supplies it)
+
+# 3. Start everything
+docker compose -f docker-compose.prod.yml up -d --build
+
+# 4. Create the first (admin) account
+docker compose -f docker-compose.prod.yml exec backend python -m app.seed alice "Alice" "a strong passphrase"
+```
+
+Then open `https://<your DOMAIN>`. The backend runs `alembic upgrade head` on every start, so
+**upgrading** is just:
+
+```sh
+git pull && docker compose -f docker-compose.prod.yml up -d --build
+```
+
+In production mode the backend refuses to start with the dev JWT secret or a SQLite URL, marks the
+refresh cookie `Secure`, and disables the `/docs` API explorer. Check logs with
+`docker compose -f docker-compose.prod.yml logs -f backend` (or `frontend` for Caddy).
+
+**Backups (Section 11.4):** the `backup` service writes a gzipped `mysqldump` to `./backups` (or
+`BACKUP_DIR`) at startup and every 24h, keeping `BACKUP_RETENTION_DAYS` (default 14). That directory
+is on the same disk as the database, so sync it somewhere else too (rclone, restic, a NAS...). To
+restore — and do a test restore once, since an unverified backup isn't a backup:
+
+```sh
+scripts/restore.sh backups/media_database-<timestamp>.sql.gz
+```
 
 ## Tests
 
@@ -138,6 +185,7 @@ Tracked here rather than silently glossed over:
 - **Per-category attribute editing in the manual entry form** — the backend validates attributes
   per `MediaType` (Appendix B) and the barcode-scan flow can populate them, but the manual-entry
   form doesn't yet expose category-specific fields (e.g. `director`, `issue_number`).
-- **Real MySQL integration testing, CI, and the production Caddy/TLS deployment** are defined
-  (docker-compose, Dockerfiles) but unexercised — this environment had no Docker/MySQL to run them
-  against.
+- **CI, and running the automated test suite against MySQL.** The production stack has been
+  smoke-tested end to end on MySQL (migrations, login/refresh with a `Secure` cookie, collection
+  CRUD including the JSON `attributes` column, a live barcode lookup, and a backup → restore round
+  trip), but the pytest suite itself still runs only against SQLite, and nothing runs it on push.

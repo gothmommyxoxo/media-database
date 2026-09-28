@@ -1,0 +1,41 @@
+# Production entrypoint (spec Section 11.1/11.3): serves the static Vite build, reverse-proxies
+# /api to the backend, and obtains/renews a Let's Encrypt certificate for {$DOMAIN} automatically.
+# HTTPS is a hard requirement, not a nicety: browsers only grant camera access (barcode scanning)
+# in a secure context (Section 2.2).
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(self), microphone=(), geolocation=()"
+		# Cover images are hotlinked from provider CDNs, hence img-src https:.
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+		-Server
+	}
+
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		root * /srv
+
+		# Hashed build assets never change under the same name; everything else (index.html, the
+		# service worker, the manifest) must revalidate so new deploys actually reach clients.
+		@hashed path /assets/*
+		header @hashed Cache-Control "public, max-age=31536000, immutable"
+		@unhashed not path /assets/*
+		header @unhashed Cache-Control "no-cache"
+
+		try_files {path} /index.html
+		file_server
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}

@@ -15,6 +15,8 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM nginx:alpine AS production
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
+# --- Production image: Caddy serves the build, proxies /api, and terminates TLS (Section 11) ---
+FROM caddy:2-alpine AS production
+COPY Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /app/dist /srv
+EXPOSE 80 443

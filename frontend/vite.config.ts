@@ -25,6 +25,10 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        // The SPA fallback must never answer for the API — those go straight to the backend.
+        navigateFallbackDenylist: [/^\/api\//],
+      },
       devOptions: {
         enabled: false,
       },

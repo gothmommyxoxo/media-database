@@ -19,6 +19,7 @@ def _set_refresh_cookie(response: Response, refresh_token: str) -> None:
         key=REFRESH_COOKIE_NAME,
         value=refresh_token,
         httponly=True,
+        secure=settings.is_production,
         samesite="lax",
         max_age=REFRESH_COOKIE_MAX_AGE,
     )
@@ -59,7 +60,7 @@ def logout(
     refresh_token: str | None = Cookie(default=None, alias=REFRESH_COOKIE_NAME),
 ) -> None:
     service.revoke_refresh_token(db, refresh_token)
-    response.delete_cookie(REFRESH_COOKIE_NAME)
+    response.delete_cookie(REFRESH_COOKIE_NAME, httponly=True, secure=settings.is_production, samesite="lax")
 
 
 @router.get("/me", response_model=UserResponse)
